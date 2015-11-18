@@ -1,0 +1,64 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from EstoqueWSService WSDL service -->
+
+  <service name="EstoqueWSPort" provider="java:RPC" style="document" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://ws.estoque.caelum.com.br/"/>
+      <parameter name="wsdlServiceElement" value="EstoqueWSService"/>
+      <parameter name="schemaUnqualified" value="http://ws.estoque.caelum.com.br/"/>
+      <parameter name="wsdlServicePort" value="EstoqueWSPort"/>
+      <parameter name="className" value="br.com.caelum.estoque.ws.EstoqueWSPortBindingSkeleton"/>
+      <parameter name="wsdlPortType" value="EstoqueWS"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <parameter name="allowedMethods" value="*"/>
+
+      <typeMapping
+        xmlns:ns="http://ws.estoque.caelum.com.br/"
+        qname="ns:item"
+        type="java:br.com.caelum.estoque.ws.Item"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://ws.estoque.caelum.com.br/"
+        qname="ns:filtro"
+        type="java:br.com.caelum.estoque.ws.Filtro"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://ws.estoque.caelum.com.br/"
+        qname="ns:filtros"
+        type="java:br.com.caelum.estoque.ws.Filtro[]"
+        innerType="cmp-ns:filtro" xmlns:cmp-ns="http://ws.estoque.caelum.com.br/"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://ws.estoque.caelum.com.br/"
+        qname="ns:listaItens"
+        type="java:br.com.caelum.estoque.ws.Item[]"
+        innerType="cmp-ns:item" xmlns:cmp-ns="http://ws.estoque.caelum.com.br/"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://ws.estoque.caelum.com.br/"
+        qname="ns:tipoItem"
+        type="java:br.com.caelum.estoque.ws.TipoItem"
+        serializer="org.apache.axis.encoding.ser.EnumSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.EnumDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
